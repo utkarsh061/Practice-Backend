@@ -17,8 +17,11 @@ app.use(express.urlencoded({extended:true,limit:"10kb"}))  //for url data as url
 app.use(express.static("public"))       //As I have public folder to store images,pdf etc static files
 app.use(cookieParser())
 
-app.get("/", (req,res) => {
-    res.send("Utkash")
-})
+//Importing Router
+import userRouter from "./routes/user.route.js"
+
+//routes declaration
+app.use("/api/user",userRouter) //http://localhost:8000/api/user/
+
 
 export default app;
