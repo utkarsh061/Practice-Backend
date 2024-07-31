@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     avatar:{
         type:String, 
-        required:true,
+        // required:true,
     },
     coverImage:{
         type:String
@@ -47,8 +47,8 @@ const userSchema = new mongoose.Schema({
 },{timestamps:true})
 
 userSchema.pre("save", async function(next){
-    if(this.password.isModified("password")){  //to check if "password" is modified
-        this.password = bcrypt(this.password,10)
+    if(this.isModified("password")){  //to check if "password" is modified
+        this.password = await bcrypt.hash(this.password,10)
     }
     next()
 })

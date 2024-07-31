@@ -10,6 +10,7 @@ cloudinary.config({
 
 const uploadOnCloudinary = async (filePath) =>{
     try {
+        console.log("FilePath:",filePath)
         if(!filePath) return null
         const uploadedFile = await cloudinary.uploader.upload(filePath,{
             resource_type:"auto"  //auto will automatically detect if uploaded file is image,video,pdf etc
@@ -18,7 +19,9 @@ const uploadOnCloudinary = async (filePath) =>{
         console.log("File have been uploaded:",uploadedFile.url)
         return uploadedFile
     } catch (error) {
+        console.log("Attempting to upload file from path:", filePath);
         fs.unlinkSync(filePath);  //remove the locally saved tempOrary file as the upload operation got failed
+        console.log("File Uploading got failed")
         return null
     }
 }
