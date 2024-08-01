@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt"
-import jsonwebtoken from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema({
     username:{
@@ -60,7 +60,7 @@ userSchema.methods.isPasswordCorrect= async function(password){
 }          
 
 userSchema.methods.generateAccessToken = function(){
-    jsonwebtoken.sign(
+   const token =  jwt.sign(
         {
             _id:this._id,
             email:this.email,
@@ -72,10 +72,11 @@ userSchema.methods.generateAccessToken = function(){
             expiresIn:process.env.ACCESS_TOKEN_EXPIRY
         }
     )
+    return token
 }
 //We have created two tokens to increase security, One will be used as "Cookies" and the other will be "Session"
 userSchema.methods.generateRefreshToken = function(){
-    jsonwebtoken.sign(
+    const token = jwt.sign(
         {
             _id:this._id,
         },
@@ -84,6 +85,7 @@ userSchema.methods.generateRefreshToken = function(){
             expiresIn:process.env.REFRESH_TOKEN_EXPIRY
         }
     )
+    return token
 }
 
 export const User = mongoose.model("User", userSchema)
